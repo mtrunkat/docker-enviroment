@@ -1,0 +1,29 @@
+<VirtualHost *:80>
+  DocumentRoot /var/www/
+  VirtualDocumentRoot /var/www/%2/
+
+  ServerName loc
+  ServerAlias www.*.loc
+
+  <Directory /var/www/%2>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+  DocumentRoot /var/www/
+  VirtualDocumentRoot /var/www/%1/
+
+  ServerName loc
+  ServerAlias *.loc
+
+  <Directory /var/www/%1>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
