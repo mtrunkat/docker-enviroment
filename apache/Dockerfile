@@ -14,11 +14,9 @@ RUN echo "root:root" | chpasswd
 # Vhost files
 COPY vhost/loc    /etc/apache2/sites-available/loc
 COPY vhost/locdoc /etc/apache2/sites-available/locdoc
-COPY vhost/locphp /etc/apache2/sites-available/locphp
 COPY vhost/locweb /etc/apache2/sites-available/locweb
 RUN ln -s /etc/apache2/sites-available/loc    /etc/apache2/sites-enabled/loc.conf 
 RUN ln -s /etc/apache2/sites-available/locdoc /etc/apache2/sites-enabled/locdoc.conf 
-RUN ln -s /etc/apache2/sites-available/locphp /etc/apache2/sites-enabled/locphp.conf 
 RUN ln -s /etc/apache2/sites-available/locweb /etc/apache2/sites-enabled/locweb.conf 
 
 # Override default vhost
@@ -27,6 +25,9 @@ COPY vhost/default /etc/apache2/sites-available/000-default.conf
 # Configure PHP
 COPY conf/php.ini /tmp/php.ini
 RUN cat /tmp/php.ini >> /etc/php5/apache2/php.ini
+
+# Give Apache access to the mounted /var/www
+RUN usermod -u 1000 www-data
 
 # Configure Apache
 COPY conf/apache2.conf /etc/apache2.conf
