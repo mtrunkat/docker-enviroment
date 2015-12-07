@@ -20,4 +20,17 @@ Each container contains following bash scripts:
   
 ## Redis
 
-## Mysql
+* Port **6379** of Docker host is mapped to port **6379** of Redis container.
+* Data stored in **volumes/redis** in host machine.
+
+## MySQL
+
+* Port **3306** of Docker host is mapped to port **3306** of Redis container.
+* Data stored in **volumes/mysql** in host machine.
+* Root password is empty.
+* It's necessary to manually ssh to MySQL container and allow root connection from other servers with command:
+
+```mysql
+USE mysql;
+UPDATE user SET host = '%' WHERE user = 'root';
+```
