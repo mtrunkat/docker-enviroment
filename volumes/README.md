@@ -1,0 +1,1 @@
+Create 2 subdirectories **mysql** and **redis** to persist MySQL and Redis data.
