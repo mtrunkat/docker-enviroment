@@ -1,9 +1,15 @@
 FROM ubuntu:14.04
 
+VOLUME ["/var/www"]
+
 # Install dependencies
 RUN apt-get update -y
+RUN apt-get upgrade -y
 RUN apt-get install -y curl apache2 nano
-RUN apt-get install -y php5 libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl php-apc
+RUN apt-get install -y php5 php5-cli php5-gd php5-json libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl php-apc php5-intl
+
+# Give Apache access to the mounted /var/www
+RUN usermod -u 1000 www-data
 
 # Basic configuration
 ENV TERM xterm
@@ -18,16 +24,7 @@ COPY vhost/locweb /etc/apache2/sites-available/locweb
 RUN ln -s /etc/apache2/sites-available/loc    /etc/apache2/sites-enabled/loc.conf 
 RUN ln -s /etc/apache2/sites-available/locdoc /etc/apache2/sites-enabled/locdoc.conf 
 RUN ln -s /etc/apache2/sites-available/locweb /etc/apache2/sites-enabled/locweb.conf 
-
-# Override default vhost
 COPY vhost/default /etc/apache2/sites-available/000-default.conf
-
-# Configure PHP
-COPY conf/php.ini /tmp/php.ini
-RUN cat /tmp/php.ini >> /etc/php5/apache2/php.ini
-
-# Give Apache access to the mounted /var/www
-RUN usermod -u 1000 www-data
 
 # Configure Apache
 COPY conf/apache2.conf /etc/apache2.conf
@@ -41,6 +38,10 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV SERVERNAME apache
+
+# Configure PHP
+COPY conf/php.ini /tmp/php.ini
+RUN cat /tmp/php.ini >> /etc/php5/apache2/php.ini
 
 EXPOSE 80
 
