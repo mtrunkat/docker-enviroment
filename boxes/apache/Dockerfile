@@ -6,7 +6,7 @@ VOLUME ["/var/www"]
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y curl apache2 nano
-RUN apt-get install -y php5 php5-cli php5-gd php5-json libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl php-apc php5-intl
+RUN apt-get install -y php5 php5-cli php5-gd php5-json libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl php-apc php5-intl phpunit
 
 # Give Apache access to the mounted /var/www
 RUN usermod -u 1000 www-data
