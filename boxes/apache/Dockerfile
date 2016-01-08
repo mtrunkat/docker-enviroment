@@ -43,6 +43,9 @@ ENV SERVERNAME apache
 COPY conf/php.ini /tmp/php.ini
 RUN cat /tmp/php.ini >> /etc/php5/apache2/php.ini
 
+# Start syslog
+RUN service rsyslog restart
+
 EXPOSE 80
 
 CMD ["/usr/sbin/apache2", "-D",  "FOREGROUND"]
