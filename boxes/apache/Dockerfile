@@ -1,12 +1,14 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 VOLUME ["/var/www"]
 
 # Install dependencies
 RUN apt-get update -y
 RUN apt-get upgrade -y
-RUN apt-get install -y curl apache2 nano
-RUN apt-get install -y php5 php5-cli php5-gd php5-json libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl php-apc php5-intl phpunit
+RUN apt-get update -y
+RUN apt-get install -y curl apache2 nano ruby git drush python rsyslog
+RUN apt-get install -y php php-cli php-gd php-json libapache2-mod-php php-mcrypt php-mysql php-curl php-apcu php-intl phpunit
+RUN gem install sass
 
 # Give Apache access to the mounted /var/www
 RUN usermod -u 1000 www-data
@@ -41,10 +43,9 @@ ENV SERVERNAME apache
 
 # Configure PHP
 COPY conf/php.ini /tmp/php.ini
-RUN cat /tmp/php.ini >> /etc/php5/apache2/php.ini
+RUN cat /tmp/php.ini >> /etc/php/7.0/apache2/php.ini
 
-# Start syslog
-RUN service rsyslog restart
+service rsyslog start
 
 EXPOSE 80
 
